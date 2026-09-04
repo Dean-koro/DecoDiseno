@@ -121,7 +121,7 @@
           </div>
         </div>
         <div id="galleryTrack"
-          class="flex gap-4 overflow-x-auto snap-x snap-proximity scroll-smooth pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-y">
+          class="flex gap-4 overflow-x-auto snap-x snap-proximity pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-auto">
           <img src="imagenes/exterior-galeria-1.jpeg" alt="Imagen 1"
             class="gallery-item min-w-[clamp(260px,34vw,360px)] h-72 flex-none rounded-2xl object-cover snap-start cursor-grab transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-lg" />
           <img src="imagenes/exterior-galeria-2.jpeg" alt="Imagen 2"
@@ -187,7 +187,7 @@
 
     <div id="lightbox"
       class="fixed inset-0 z-[100] hidden glass-modal items-center justify-center opacity-0 transition-opacity duration-300">
-      <button aria-label="Close" onclick="closeLightbox()"
+      <button id="lightbox-close" aria-label="Close"
         class="absolute top-8 right-8 w-12 h-12 rounded-full bg-surface/50 backdrop-blur-md flex items-center justify-center text-on-surface hover:bg-surface transition-colors z-10">
         <span class="material-symbols-outlined text-2xl">close</span>
       </button>

@@ -17,27 +17,27 @@
     />
 
     <style>
-      .carousel-container {
-        scroll-behavior: smooth;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      .carousel-container::-webkit-scrollbar {
-        display: none;
-      }
-      .glass-nav {
-        background: rgba(252, 249, 248, 0.4);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-      }
-      .glass-modal {
-        background: rgba(252, 249, 248, 0.85);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-      }
-      .ambient-shadow {
-        box-shadow: 0 20px 40px -10px rgba(75, 94, 109, 0.08);
-      }
+    .carousel-container {
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .carousel-container::-webkit-scrollbar {
+      display: none;
+    }
+    .glass-nav {
+      background: rgba(252, 249, 248, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .glass-modal {
+      background: rgba(252, 249, 248, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .ambient-shadow {
+      box-shadow: 0 20px 40px -10px rgba(75, 94, 109, 0.08);
+    }
     </style>
   </head>
   <body class="bg-[#FAF7F2] text-white font-sans antialiased">
@@ -60,8 +60,7 @@
         >
           <span
             class="font-headline-md text-headline-md font-medium tracking-tight text-on-surface"
-            >Deco Diseño</span
-          >
+          >Deco Diseño</span>
         </div>
 
         <nav
@@ -70,18 +69,15 @@
           <a
             class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
             href="index.html"
-            >Inicio</a
-          >
+          >Inicio</a>
           <a
             class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
             href="proyectos.html"
-            >Proyectos</a
-          >
+          >Proyectos</a>
           <a
             class="text-primary font-semibold border-b-2 border-primary pb-1"
             href="contacto.html"
-            >Contacto</a
-          >
+          >Contacto</a>
         </nav>
 
         <button
@@ -125,12 +121,8 @@
         </p>
 
         <button
+          id="scroll-to-form"
           class="mt-4 px-8 py-3.5 bg-white text-black hover:bg-gray-200 rounded-full font-body-md text-body-md font-medium tracking-wide uppercase transition-all duration-300"
-          onclick="
-            document
-              .getElementById('formulario')
-              .scrollIntoView({ behavior: 'smooth' })
-          "
         >
           Cotizar Ahora
         </button>
@@ -159,8 +151,7 @@
             <div>
               <span
                 class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 block mb-1"
-                >Atención Personalizada</span
-              >
+              >Atención Personalizada</span>
               <h3
                 class="text-xl font-medium uppercase tracking-wide text-stone-900"
               >
@@ -182,14 +173,12 @@
                 class="p-3 bg-stone-900 text-white rounded-lg group-hover:scale-105 transition-transform duration-300"
               >
                 <span class="material-symbols-outlined text-lg block"
-                  >mail</span
-                >
+                >mail</span>
               </div>
               <div class="space-y-1">
                 <span
                   class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 block"
-                  >Correo Electrónico</span
-                >
+                >Correo Electrónico</span>
                 <p
                   class="text-sm font-mono text-stone-900 group-hover:text-stone-700 transition-colors break-all"
                 >
@@ -217,14 +206,12 @@
                 class="p-3 bg-stone-900 text-white rounded-lg group-hover:scale-105 transition-transform duration-300"
               >
                 <span class="material-symbols-outlined text-lg block"
-                  >call</span
-                >
+                >call</span>
               </div>
               <div class="space-y-1">
                 <span
                   class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 block"
-                  >Atención Directa / WhatsApp</span
-                >
+                >Atención Directa / WhatsApp</span>
                 <p
                   class="text-sm font-mono text-stone-900 group-hover:text-stone-700 transition-colors"
                 >
@@ -248,8 +235,7 @@
           >
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-base text-stone-700"
-                >schedule</span
-              >
+              >schedule</span>
               <span>Lunes a Sabado: 9:00 AM – 6:00 PM</span>
             </div>
           </div>
@@ -260,7 +246,7 @@
           class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-stone-100"
         >
           <form
-            action="https://formsubmit.co/mejiajacson9@gmail.com"
+            action="https://formsubmit.co/mailto:deco.design.tap@gmail.com"
             method="POST"
             class="space-y-6"
           >
@@ -273,7 +259,14 @@
 
             <input type="hidden" name="_captcha" value="true" />
 
-            <input type="text" name="_honey" style="display: none" />
+            <input
+              type="text"
+              name="_honey"
+              autocomplete="off"
+              tabindex="-1"
+              aria-hidden="true"
+              style="display: none"
+            />
 
             <input
               type="hidden"
@@ -285,13 +278,14 @@
               <label
                 for="name"
                 class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
-                >Nombre y apellido*</label
-              >
+              >Nombre y apellido*</label>
               <input
                 type="text"
                 id="name"
                 name="Nombre"
                 required
+                autocomplete="name"
+                maxlength="100"
                 class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 placeholder:text-stone-500"
                 placeholder="Tu nombre completo"
               />
@@ -302,13 +296,14 @@
                 <label
                   for="phone"
                   class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
-                  >Teléfono o WhatsApp*</label
-                >
+                >Teléfono o WhatsApp*</label>
                 <input
                   type="tel"
                   id="phone"
                   name="Teléfono"
                   required
+                  autocomplete="tel"
+                  maxlength="25"
                   class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 placeholder:text-stone-500"
                   placeholder="+52 999 000 0000"
                 />
@@ -317,13 +312,14 @@
                 <label
                   for="email"
                   class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
-                  >Email*</label
-                >
+                >Email*</label>
                 <input
                   type="email"
                   id="email"
                   name="Email"
                   required
+                  autocomplete="email"
+                  maxlength="254"
                   class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 placeholder:text-stone-500"
                   placeholder="correo@ejemplo.com"
                 />
@@ -334,12 +330,12 @@
               <label
                 for="company"
                 class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
-                >Nombre del hotel o empresa</label
-              >
+              >Nombre del hotel o empresa</label>
               <input
                 type="text"
                 id="company"
                 name="Empresa_o_Hotel"
+                maxlength="150"
                 class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 placeholder:text-stone-500"
                 placeholder="Nombre del proyecto o cliente"
               />
@@ -349,8 +345,7 @@
               <label
                 for="service"
                 class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
-                >¿Qué tipo de servicio te interesa?</label
-              >
+              >¿Qué tipo de servicio te interesa?</label>
               <select
                 id="service"
                 name="Tipo_de_Servicio"
@@ -386,11 +381,11 @@
               <label
                 for="message"
                 class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
-                >Déjanos saber algún detalle adicional para tu cotización</label
-              >
+              >Déjanos saber algún detalle adicional para tu cotización</label>
               <textarea
                 id="message"
                 name="Detalles_Adicionales"
+                maxlength="2000"
                 rows="4"
                 class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 resize-none placeholder:text-stone-500"
                 placeholder="Medidas aproximadas, número de habitaciones, ubicación del proyecto..."
@@ -446,18 +441,15 @@
           <a
             class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
             href="mailto:deco.design.tap@gmail.com"
-            >Correo electrónico</a
-          >
+          >Correo electrónico</a>
           <a
             class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
             href="https://wa.me/5219988656248?text=Hola%20Deco%20Dise%C3%B1o,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios."
-            >Mensaje directo</a
-          >
+          >Mensaje directo</a>
           <a
             class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
             href="aviso-de-privacidad.html"
-            >Privacidad</a
-          >
+          >Privacidad</a>
         </nav>
 
         <div

@@ -33,6 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  document.querySelector("#scroll-to-form")?.addEventListener("click", () => {
+    document.getElementById("formulario")?.scrollIntoView({
+      behavior: "smooth",
+    });
+  });
+
   const galleryItems = [...document.querySelectorAll(".gallery-item")];
   const projectImages = [
     ...document.querySelectorAll('main img[src^="imagenes/"]'),
@@ -109,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let startX = 0;
     let startScrollLeft = 0;
     track.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse") return;
       dragging = true;
       moved = false;
       startX = event.clientX;
@@ -116,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
       track.classList.add("cursor-grabbing", "select-none");
     });
     track.addEventListener("pointermove", (event) => {
-      if (!dragging) return;
+      if (!dragging || event.pointerType !== "mouse") return;
       const distance = event.clientX - startX;
       if (Math.abs(distance) > 6) moved = true;
       track.scrollLeft = startScrollLeft - distance;
@@ -213,4 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
     lightbox?.classList.add("hidden");
     lightbox?.classList.remove("flex");
   };
+  document.querySelector("#lightbox-close")?.addEventListener(
+    "click",
+    window.closeLightbox,
+  );
 });
