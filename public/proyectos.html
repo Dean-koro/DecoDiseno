@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deco Diseño - Proyectos</title>
+    <link href="css/output.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" crossorigin href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet" />
+
+    <style>
+    .carousel-container {
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .carousel-container::-webkit-scrollbar {
+      display: none;
+    }
+    .glass-nav {
+      background: rgba(252, 249, 248, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .glass-modal {
+      background: rgba(252, 249, 248, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .ambient-shadow {
+      box-shadow: 0 20px 40px -10px rgba(75, 94, 109, 0.08);
+    }
+    </style>
+  </head>
+  <body class="bg-[#181e29] text-white font-sans antialiased">
+    <header
+      class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/20 shadow-sm transition-all duration-300">
+      <div
+        class="max-w-max-width mx-auto px-gutter py-3 md:py-6 flex justify-between items-center">
+        <div class="w-16 h-16 md:w-28 md:h-28 flex-shrink-0">
+          <img alt="Deco Diseño Logo"
+            class="w-full h-full object-cover rounded-full border border-outline-variant/40"
+            src="imagenes/logo.png" />
+        </div>
+
+        <div
+          class="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
+          <span
+            class="font-headline-md text-headline-md font-medium tracking-tight text-on-surface">Deco Diseño</span>
+        </div>
+
+        <nav
+          class="hidden md:flex items-center gap-8 font-body-md text-body-md">
+          <a
+            class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
+            href="index.html">Inicio</a>
+          <a class="text-primary font-semibold border-b-2 border-primary pb-1"
+            href="proyectos.html">Proyectos</a>
+          <a
+            class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
+            href="contacto.html">Contacto</a>
+        </nav>
+
+        <button aria-label="Menu"
+          class="md:hidden text-primary p-2 hover:scale-95 duration-200 ease-in-out">
+          <span class="material-symbols-outlined" data-icon="menu">menu</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="bg-[#FDFBF7] h-24 md:h-36 w-full flex-shrink-0"></div>
+
+    <section
+      class="relative bg-cover bg-center bg-no-repeat py-20 md:py-36 text-center brightness-125"
+      style="background-image: url('imagenes/hero_proyectos.jpeg');">
+      <div class="absolute inset-0 bg-black/60"></div>
+
+      <div
+        class="relative z-10 max-w-4xl mx-auto px-gutter flex flex-col items-center gap-6 pt-12 md:pt-16">
+        <span
+          class="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-md font-label-caps text-label-caps tracking-widest uppercase">
+                    The Agency
+                </span>
+
+        <h1
+          class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-white uppercase tracking-wider font-light">
+                    Conoce nuestros casos de éxito
+                </h1>
+
+        <p class="font-body-lg text-body-lg text-gray-200 max-w-2xl font-light">
+                    Transformamos complejos hoteleros y espacios comerciales con soluciones integrales a medida. Conoce cómo combinamos diseño, durabilidad y funcionalidad en cada entrega.
+                </p>
+
+        <button
+          class="mt-4 px-8 py-3.5 bg-white text-black hover:bg-gray-200 rounded-full font-body-md text-body-md font-medium tracking-wide uppercase transition-all duration-300"
+          onclick="window.location.href='contacto.html'" ">
+                    Cotizar Ahora
+                </button>
+      </div>
+    </section>
+
+    <main class="w-full py-12 md:py-20">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12">
+        <div
+          class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div>
+            <h1
+              class="text-3xl md:text-5xl font-light uppercase tracking-wide leading-tight">
+                        Nuestros <span class="font-serif italic text-stone-300">Proyectos</span>
+                    </h1>
+          </div>
+
+          <a href="index.html"
+            class="inline-flex items-center gap-3 px-7 py-3 border border-white/30 rounded-full text-xs font-semibold uppercase tracking-widest hover:bg-white hover:text-stone-900 transition-all duration-300 self-start md:self-auto">
+                    Volver al Inicio <span>&rarr;</span>
+                </a>
+        </div>
+
+        <div class="projects-grid grid grid-cols-1 md:grid-cols-12 gap-10">
+          <div class="group md:col-span-7 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto_SLS.jpeg"
+                alt="Hotel SLS"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Hotel SLS</h3>
+              </div>
+              <a href="proyecto-SLS.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-5 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/Proyecto_Allure.jpg"
+                alt="Allure residencial"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Allure residencial</h3>
+              </div>
+              <a href="proyecto-Allure.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-5 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/Proyecto_Secrets.jpeg"
+                alt="Hotel Secrets the vine"
+                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Secrets the vine</h3>
+              </div>
+              <a href="proyecto-secret.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-7 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto_kemplisky.jpeg"
+                alt="Hotel Kemplisky"
+                class="w-full h-full object-cover object-bottom group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Hotel Kemplisky</h3>
+              </div>
+              <a href="proyecto-Kemplisky.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-7 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto_KFC.jpeg"
+                alt="KFC Portillo"
+                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">KFC Portillo</h3>
+              </div>
+              <a href="proyecto-KFC.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-5 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto-secret-2.jpg"
+                alt="Secret the vine"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Secret the vine</h3>
+              </div>
+              <a href="proyecto-secret-2.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-5 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto-beach.jpeg"
+                alt="Hotel Azul Beach"
+                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Azul Beach</h3>
+              </div>
+              <a href="proyecto-Azul-beach.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-7 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto-NYX.jpeg"
+                alt="Hotel NYX"
+                class="w-full h-full object-cover object-bottom group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Hotel NYX</h3>
+              </div>
+              <a href="proyecto-NYX.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-7 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto-MEX.jpeg"
+                alt="Hotel MEX"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Hotel MEX</h3>
+              </div>
+              <a href="proyecto-MEX.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-5 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto-aldos.jpeg"
+                alt="Aldo's"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Grupo Aldo's</h3>
+              </div>
+              <a href="proyecto-Aldos.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="group md:col-span-5 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/proyecto-xcaret.jpg"
+                alt="Hotel Xcaret"
+                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Hotel Xcaret</h3>
+              </div>
+              <a href="proyecto-xcaret.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="group md:col-span-7 flex flex-col justify-between">
+            <div
+              class="relative h-[350px] md:h-[420px] rounded-lg overflow-hidden mb-4">
+              <img
+                src="imagenes/pizza-hut.jpeg"
+                alt="Pizza Hut"
+                class="w-full h-full object-cover object-bottom group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+              <span
+                class="absolute top-4 left-4 bg-white/10 backdrop-blur-md text-white/90 text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                        Q.Roo, México
+                    </span>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+              <div>
+                <h3
+                  class="text-xl md:text-2xl font-light uppercase tracking-wide text-white">Pizza hut
+                        
+                        </h3>
+              </div>
+              <a href="proyecto-pizza-hut.html"
+                class="p-3 border border-white/20 rounded-full group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer
+      class="bg-surface-container-low w-full py-16 border-t border-outline-variant/10">
+      <div
+        class="max-w-max-width mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-8">
+        <div
+          class="font-headline-md text-headline-md font-bold text-primary">Deco Diseño</div>
+
+        <nav
+          class="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8 font-body-md text-body-md font-label-caps text-label-caps tracking-widest text-on-secondary-container">
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="mailto:deco.design.tap@gmail.com">Correo electrónico</a>
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="https://wa.me/5219988656248?text=Hola%20Deco%20Dise%C3%B1o,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios.">Mensaje directo</a>
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="aviso-de-privacidad.html">Privacidad</a>
+        </nav>
+
+        <div
+          class="font-body-md text-body-md font-label-caps text-label-caps text-on-secondary-container/60 mt-8 md:mt-0">
+                    © 2026 Deco Diseño. All rights reserved.
+                </div>
+      </div>
+    </footer>
+
+    <script src="javascript/script.js"></script>
+  </body>
+</html>

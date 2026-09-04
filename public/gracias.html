@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deco Diseño - Gracias</title>
+    <link href="css/output.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" crossorigin href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet" />
+
+    <style>
+    .carousel-container {
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .carousel-container::-webkit-scrollbar {
+      display: none;
+    }
+    .glass-nav {
+      background: rgba(252, 249, 248, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .glass-modal {
+      background: rgba(252, 249, 248, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .ambient-shadow {
+      box-shadow: 0 20px 40px -10px rgba(75, 94, 109, 0.08);
+    }
+    </style>
+  </head>
+  <body
+    class="bg-[#FAF7F2] text-stone-900 font-sans antialiased flex flex-col min-h-screen">
+    <header
+      class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/20 shadow-sm transition-all duration-300">
+      <div
+        class="max-w-max-width mx-auto px-gutter py-3 md:py-6 flex justify-between items-center">
+        <div class="w-16 h-16 md:w-28 md:h-28 flex-shrink-0">
+          <img alt="Deco Diseño Logo"
+            class="w-full h-full object-cover rounded-full border border-outline-variant/40"
+            src="imagenes/logo.png" />
+        </div>
+        <div
+          class="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
+          <span
+            class="font-headline-md text-headline-md font-medium tracking-tight text-on-surface">Deco Diseño</span>
+        </div>
+        <nav
+          class="hidden md:flex items-center gap-8 font-body-md text-body-md">
+          <a
+            class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
+            href="index.html">Inicio</a>
+          <a
+            class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
+            href="proyectos.html">Proyectos</a>
+          <a
+            class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
+            href="contacto.html">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="h-28 md:h-36 w-full flex-shrink-0"></div>
+
+    <main
+      class="flex-grow flex items-center justify-center px-6 py-12 md:py-20">
+      <div
+        class="max-w-xl w-full bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-stone-200/80 text-center space-y-6">
+        <div
+          class="w-16 h-16 bg-stone-900 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
+          <span class="material-symbols-outlined text-3xl">check</span>
+        </div>
+
+        <div class="space-y-2">
+          <span
+            class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 block">Solicitud Recibida</span>
+          <h1
+            class="text-2xl md:text-3xl font-light uppercase tracking-wide text-stone-900">
+                    ¡Gracias por escribirnos!
+                </h1>
+          <p
+            class="text-xs md:text-sm text-stone-600 leading-relaxed font-light pt-2">
+                    Hemos recibido tus datos y especificaciones de proyecto correctamente. Nuestro equipo revisará la información y se pondrá en contacto contigo a la brevedad.
+                </p>
+        </div>
+
+        <div
+          class="pt-6 border-t border-stone-200/60 flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="index.html"
+            class="px-6 py-3 bg-[#181e29] text-white rounded-full text-xs font-semibold uppercase tracking-[0.15em] hover:bg-black transition-all duration-300 shadow-sm">
+                    Volver al Inicio
+                </a>
+          <a
+            href="https://wa.me/5219988656248?text=Hola%20Deco%20Dise%C3%B1o,%20acabo%20de%20enviar%20un%20formulario%20de%20cotizaci%C3%B3n."
+            target="_blank" rel="noopener noreferrer"
+            class="px-6 py-3 bg-[#faf8f5] border border-stone-300 text-stone-800 rounded-full text-xs font-semibold uppercase tracking-[0.15em] hover:border-stone-900 hover:bg-white transition-all duration-300 inline-flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">chat</span>
+                    Atención por WhatsApp
+                </a>
+        </div>
+      </div>
+    </main>
+
+    <footer
+      class="bg-surface-container-low w-full py-16 border-t border-outline-variant/10">
+      <div
+        class="max-w-max-width mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-8">
+        <div
+          class="font-headline-md text-headline-md font-bold text-primary">Deco Diseño</div>
+
+        <nav
+          class="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8 font-body-md text-body-md font-label-caps text-label-caps tracking-widest text-on-secondary-container">
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="mailto:deco.design.tap@gmail.com">Correo electrónico</a>
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="https://wa.me/5219988656248?text=Hola%20Deco%20Dise%C3%B1o,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios.">Mensaje directo</a>
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="aviso-de-privacidad.html">Privacidad</a>
+        </nav>
+
+        <div
+          class="font-body-md text-body-md font-label-caps text-label-caps text-on-secondary-container/60 mt-8 md:mt-0">
+                    © 2026 Deco Diseño. All rights reserved.
+                </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deco Diseño - Contacto</title>
+    <link href="css/output.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" crossorigin href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .carousel-container {
+        scroll-behavior: smooth;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .carousel-container::-webkit-scrollbar {
+        display: none;
+      }
+      .glass-nav {
+        background: rgba(252, 249, 248, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .glass-modal {
+        background: rgba(252, 249, 248, 0.85);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+      }
+      .ambient-shadow {
+        box-shadow: 0 20px 40px -10px rgba(75, 94, 109, 0.08);
+      }
+    </style>
+  </head>
+  <body class="bg-[#FAF7F2] text-white font-sans antialiased">
+    <header
+      class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/20 shadow-sm transition-all duration-300"
+    >
+      <div
+        class="max-w-max-width mx-auto px-gutter py-3 md:py-6 flex justify-between items-center"
+      >
+        <div class="w-16 h-16 md:w-28 md:h-28 flex-shrink-0">
+          <img
+            alt="Deco Diseño Logo"
+            class="w-full h-full object-cover rounded-full border border-outline-variant/40"
+            src="imagenes/logo.png"
+          />
+        </div>
+
+        <div
+          class="absolute left-1/2 transform -translate-x-1/2 hidden md:block"
+        >
+          <span
+            class="font-headline-md text-headline-md font-medium tracking-tight text-on-surface"
+            >Deco Diseño</span
+          >
+        </div>
+
+        <nav
+          class="hidden md:flex items-center gap-8 font-body-md text-body-md"
+        >
+          <a
+            class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
+            href="index.html"
+            >Inicio</a
+          >
+          <a
+            class="text-on-surface-variant hover:text-primary transition-colors hover:translate-y-[-2px] duration-300"
+            href="proyectos.html"
+            >Proyectos</a
+          >
+          <a
+            class="text-primary font-semibold border-b-2 border-primary pb-1"
+            href="contacto.html"
+            >Contacto</a
+          >
+        </nav>
+
+        <button
+          aria-label="Menu"
+          class="md:hidden text-primary p-2 hover:scale-95 duration-200 ease-in-out"
+        >
+          <span class="material-symbols-outlined" data-icon="menu">menu</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="bg-[#FDFBF7] h-24 md:h-36 w-full flex-shrink-0"></div>
+
+    <section
+      class="relative bg-cover bg-center bg-no-repeat py-20 md:py-36 text-center brightness-125"
+      style="background-image: url(&quot;imagenes/contacto_hero.jpeg&quot;)"
+    >
+      <div class="absolute inset-0 bg-black/60"></div>
+
+      <div
+        class="relative z-10 max-w-4xl mx-auto px-gutter flex flex-col items-center gap-6 pt-12 md:pt-16"
+      >
+        <span
+          class="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-md font-label-caps text-label-caps tracking-widest uppercase"
+        >
+          The Agency
+        </span>
+
+        <h1
+          class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-white uppercase tracking-wider font-light"
+        >
+          Contáctanos
+        </h1>
+
+        <p class="font-body-lg text-body-lg text-gray-200 max-w-2xl font-light">
+          Estamos listos para dar vida a tus ideas. Ponte en contacto con
+          nuestro equipo de especialistas para recibir asesoría técnica,
+          resolver tus dudas o solicitar una cotización a la medida. La
+          cotización y las visitias son completamente gratuitas y sin
+          compromiso. ¡Hablemos de tu proyecto!
+        </p>
+
+        <button
+          class="mt-4 px-8 py-3.5 bg-white text-black hover:bg-gray-200 rounded-full font-body-md text-body-md font-medium tracking-wide uppercase transition-all duration-300"
+          onclick="
+            document
+              .getElementById('formulario')
+              .scrollIntoView({ behavior: 'smooth' })
+          "
+        >
+          Cotizar Ahora
+        </button>
+      </div>
+    </section>
+
+    <main class="w-full py-12 md:py-20 px-6">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h1
+            class="text-3xl md:text-5xl font-light uppercase tracking-wide text-stone-900 leading-tight"
+          >
+            ¿Tienes un sueño? Déjanos hacerlo realidad.<br />
+            <span class="font-serif italic font-normal text-stone-600"
+              >Cotiza gratis.</span
+            >
+          </h1>
+        </div>
+
+        <div
+          class="bg-white/80 backdrop-blur-sm border border-stone-200/80 rounded-2xl p-8 md:p-10 mb-12 shadow-sm"
+        >
+          <div
+            class="border-b border-stone-200/80 pb-5 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-2"
+          >
+            <div>
+              <span
+                class="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 block mb-1"
+                >Atención Personalizada</span
+              >
+              <h3
+                class="text-xl font-medium uppercase tracking-wide text-stone-900"
+              >
+                Medios de Contacto
+              </h3>
+            </div>
+            <p class="text-xs text-stone-500 font-light max-w-sm">
+              Estamos disponibles para asesorarte en la planificación,
+              cotización y ejecución de tu proyecto.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a
+              href="mailto:deco.design.tap@gmail.com"
+              class="group flex items-start gap-4 p-5 rounded-xl bg-[#faf8f5] border border-stone-200/60 hover:border-stone-400 hover:shadow-md transition-all duration-300"
+            >
+              <div
+                class="p-3 bg-stone-900 text-white rounded-lg group-hover:scale-105 transition-transform duration-300"
+              >
+                <span class="material-symbols-outlined text-lg block"
+                  >mail</span
+                >
+              </div>
+              <div class="space-y-1">
+                <span
+                  class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 block"
+                  >Correo Electrónico</span
+                >
+                <p
+                  class="text-sm font-mono text-stone-900 group-hover:text-stone-700 transition-colors break-all"
+                >
+                  deco.design.tap@gmail.com
+                </p>
+                <span
+                  class="inline-flex items-center gap-1 text-[11px] font-medium text-stone-600 pt-1"
+                >
+                  Enviar mensaje
+                  <span
+                    class="text-xs transition-transform group-hover:translate-x-1"
+                    >&rarr;</span
+                  >
+                </span>
+              </div>
+            </a>
+
+            <a
+              href="https://wa.me/5219988656248?text=Hola%20Deco%20Dise%C3%B1o,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-start gap-4 p-5 rounded-xl bg-[#faf8f5] border border-stone-200/60 hover:border-stone-400 hover:shadow-md transition-all duration-300"
+            >
+              <div
+                class="p-3 bg-stone-900 text-white rounded-lg group-hover:scale-105 transition-transform duration-300"
+              >
+                <span class="material-symbols-outlined text-lg block"
+                  >call</span
+                >
+              </div>
+              <div class="space-y-1">
+                <span
+                  class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 block"
+                  >Atención Directa / WhatsApp</span
+                >
+                <p
+                  class="text-sm font-mono text-stone-900 group-hover:text-stone-700 transition-colors"
+                >
+                  +52 (998) 865-6248
+                </p>
+                <span
+                  class="inline-flex items-center gap-1 text-[11px] font-medium text-stone-600 pt-1"
+                >
+                  Iniciar chat
+                  <span
+                    class="text-xs transition-transform group-hover:translate-x-1"
+                    >&rarr;</span
+                  >
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <div
+            class="mt-6 pt-6 border-t border-stone-200/60 flex justify-end items-center text-xs text-stone-500 font-light"
+          >
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-base text-stone-700"
+                >schedule</span
+              >
+              <span>Lunes a Sabado: 9:00 AM – 6:00 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="formulario"
+          class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-stone-100"
+        >
+          <form
+            action="https://formsubmit.co/mejiajacson9@gmail.com"
+            method="POST"
+            class="space-y-6"
+          >
+            <input
+              type="hidden"
+              name="_subject"
+              value="Nueva Solicitud de Cotización - Deco Diseño"
+            />
+            <input type="hidden" name="_template" value="table" />
+
+            <input type="hidden" name="_captcha" value="true" />
+
+            <input type="text" name="_honey" style="display: none" />
+
+            <input
+              type="hidden"
+              name="_next"
+              value="https://DecoDiseno.com/gracias.html"
+            />
+
+            <div>
+              <label
+                for="name"
+                class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
+                >Nombre y apellido*</label
+              >
+              <input
+                type="text"
+                id="name"
+                name="Nombre"
+                required
+                class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 placeholder:text-stone-500"
+                placeholder="Tu nombre completo"
+              />
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  for="phone"
+                  class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
+                  >Teléfono o WhatsApp*</label
+                >
+                <input
+                  type="tel"
+                  id="phone"
+                  name="Teléfono"
+                  required
+                  class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 placeholder:text-stone-500"
+                  placeholder="+52 999 000 0000"
+                />
+              </div>
+              <div>
+                <label
+                  for="email"
+                  class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
+                  >Email*</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="Email"
+                  required
+                  class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 placeholder:text-stone-500"
+                  placeholder="correo@ejemplo.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="company"
+                class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
+                >Nombre del hotel o empresa</label
+              >
+              <input
+                type="text"
+                id="company"
+                name="Empresa_o_Hotel"
+                class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 placeholder:text-stone-500"
+                placeholder="Nombre del proyecto o cliente"
+              />
+            </div>
+
+            <div>
+              <label
+                for="service"
+                class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
+                >¿Qué tipo de servicio te interesa?</label
+              >
+              <select
+                id="service"
+                name="Tipo_de_Servicio"
+                class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-700"
+              >
+                <option value="" disabled selected>
+                  Selecciona una opción
+                </option>
+                <option value="Fabricación e instalación personalizada">
+                  Fabricación e instalación personalizada
+                </option>
+                <option value="Cortinas / Persianas">
+                  Cortinas / Persianas
+                </option>
+                <option value="Tapiceria / Muebleria">
+                  Tapiceria / Muebleria
+                </option>
+                <option value="Muebleria de exterior">
+                  Muebleria de exterior
+                </option>
+                <option value="Toldos">Toldos</option>
+                <option value="Mantenimiento o renovación">
+                  Mantenimiento o renovación
+                </option>
+                <option value="Tapiceria automotriz">
+                  Tapiceria automotriz
+                </option>
+                <option value="Tapiceria nautica">Tapiceria nautica</option>
+              </select>
+            </div>
+
+            <div>
+              <label
+                for="message"
+                class="block text-xs font-medium uppercase tracking-wider text-stone-500 mb-2"
+                >Déjanos saber algún detalle adicional para tu cotización</label
+              >
+              <textarea
+                id="message"
+                name="Detalles_Adicionales"
+                rows="4"
+                class="w-full px-4 py-3 bg-stone-50 border-b border-stone-300 focus:border-stone-900 focus:bg-white outline-none transition-all text-sm text-stone-900 resize-none placeholder:text-stone-500"
+                placeholder="Medidas aproximadas, número de habitaciones, ubicación del proyecto..."
+              ></textarea>
+            </div>
+
+            <div class="pt-4">
+              <button
+                type="submit"
+                class="w-full py-4 bg-[#181e29] text-white rounded-full text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:shadow-lg transition-all duration-300"
+              >
+                Solicitar cotización
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <a
+          href="https://wa.me/5219988656248?text=Hola%20Deco%20Dise%C3%B1o,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios."
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Contactar por WhatsApp"
+          class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 bg-[#25D366] text-white rounded-full shadow-lg hover:scale-110 hover:bg-[#20ba5a] transition-all duration-300 group"
+        >
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+            <path
+              d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"
+            />
+          </svg>
+
+          <span
+            class="absolute right-14 bg-stone-900 text-white text-[10px] uppercase font-mono px-3 py-1.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none"
+          >
+            Escríbenos por WhatsApp
+          </span>
+        </a>
+      </div>
+    </main>
+
+    <footer
+      class="bg-surface-container-low w-full py-16 border-t border-outline-variant/10"
+    >
+      <div
+        class="max-w-max-width mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-8"
+      >
+        <div class="font-headline-md text-headline-md font-bold text-primary">
+          Deco Diseño
+        </div>
+
+        <nav
+          class="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8 font-body-md text-body-md font-label-caps text-label-caps tracking-widest text-on-secondary-container"
+        >
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="mailto:deco.design.tap@gmail.com"
+            >Correo electrónico</a
+          >
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="https://wa.me/5219988656248?text=Hola%20Deco%20Dise%C3%B1o,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios."
+            >Mensaje directo</a
+          >
+          <a
+            class="hover:text-primary hover:underline transition-all opacity-80 hover:opacity-100"
+            href="aviso-de-privacidad.html"
+            >Privacidad</a
+          >
+        </nav>
+
+        <div
+          class="font-body-md text-body-md font-label-caps text-label-caps text-on-secondary-container/60 mt-8 md:mt-0"
+        >
+          © 2026 Deco Diseño. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script src="javascript/script.js"></script>
+  </body>
+</html>
