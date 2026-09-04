@@ -40,9 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const galleryItems = [...document.querySelectorAll(".gallery-item")];
-  const projectImages = [
-    ...document.querySelectorAll('main img[src^="imagenes/"]'),
-  ]
+  const projectImages = [...document.querySelectorAll('img[src^="imagenes/"]')]
     .filter((image) => !image.classList.contains("gallery-item"));
   const zoomableImages = [...new Set([...galleryItems, ...projectImages])];
 
@@ -90,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("contextmenu", (event) => {
     const image = event.target.closest(
-      ".gallery-item, .gallery-overlay-image, #lightbox-img",
+      'img[src^="imagenes/"], .gallery-overlay-image, #lightbox-img',
     );
     if (!image) return;
     event.preventDefault();
