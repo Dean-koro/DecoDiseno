@@ -1,4 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const instagramLink = document.createElement("a");
+  instagramLink.href =
+    "https://www.instagram.com/deco.diseno.oficial?stkn=ejA0ZHhvcXR5ZmM4";
+  instagramLink.target = "_blank";
+  instagramLink.rel = "noopener noreferrer";
+  instagramLink.setAttribute("aria-label", "Síguenos en Instagram");
+  instagramLink.className =
+    "fixed bottom-5 left-[82px] z-[9999] flex h-[50px] w-[50px] items-center justify-center rounded-full bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#FCAF45] text-white shadow-[0_4px_10px_rgba(0,0,0,0.3)] transition-transform duration-200 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E1306C]";
+  instagramLink.innerHTML =
+    '<svg class="h-[26px] w-[26px] fill-none stroke-current" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
+  document.body.appendChild(instagramLink);
+
   const menuButton = document.querySelector('button[aria-label="Menu"]');
   let mobileMenu = null;
 
