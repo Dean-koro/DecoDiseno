@@ -6,18 +6,8 @@ const SECCIONES = {
   tapiceria_nautica: { jsonFile: "../content/galeria-tapiceria-nautica.json", githubPath: "public/content/galeria-tapiceria-nautica.json" },
   tapiceria_exterior: { jsonFile: "../content/galeria-exterior.json", githubPath: "public/content/galeria-exterior.json" }
 };
+
 const ADMIN_GITHUB_LOGIN = "bot-DecoDiseno";
-const CMS_CONFIG = {
-  backend: {
-    name: "github",
-    repo: "Dean-koro/DecoDiseno",
-    branch: "main",
-    base_url: "https://decap-oauth.25308167.workers.dev",
-  },
-};
-const CMS_READY = window.CMS?.init
-  ? window.CMS.init({ config: "config.yml" })
-  : Promise.resolve(false);
 
 let listaImagenes = [];
 let seccionActual = "cortinas";
@@ -25,8 +15,13 @@ let cropperInstance = null;
 let indiceEncuadre = null;
 let indiceAEliminar = null;
 
-// Inicialización de Listeners de Eventos DOM
+// Inicialización
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. Inicializar Decap CMS
+  if (window.CMS && typeof window.CMS.init === "function") {
+    window.CMS.init();
+  }
+
   const loginButton = document.getElementById("loginGitHubBtn");
   const loginScreen = document.getElementById("loginScreen");
   const loginError = document.getElementById("loginError");
@@ -35,102 +30,88 @@ document.addEventListener("DOMContentLoaded", () => {
   const mostrarLogin = (mensaje = "") => {
     loginScreen.classList.remove("hidden");
     app.classList.add("hidden");
-    loginError.textContent = mensaje;
-    loginError.classList.toggle("hidden", !mensaje);
+    if (loginError) {
+      loginError.textContent = mensaje;
+      loginError.classList.toggle("hidden", !mensaje);
+    }
   };
 
   const mostrarApp = () => {
     loginScreen.classList.add("hidden");
     app.classList.remove("hidden");
-    document.getElementById("sectionSelect").addEventListener("change", (e) => cargarGaleria(e.target.value));
-    document.getElementById("saveBtn").addEventListener("click", guardarDirectoEnGitHub);
-    document.getElementById("cancelCropBtn").addEventListener("click", cerrarModalEncuadre);
-    document.getElementById("applyCropBtn").addEventListener("click", aplicarEncuadre);
-    document.getElementById("cancelDeleteBtn").addEventListener("click", cerrarModalBorrado);
-    document.getElementById("confirmDeleteBtn").addEventListener("click", confirmarEliminacion);
-    cargarGaleria("cortinas");
+
+    document.getElementById("sectionSelect")?.addEventListener("change", (e) => cargarGaleria(e.target.value));
+    document.getElementById("saveBtn")?.addEventListener("click", guardarDirectoEnGitHub);
+    document.getElementById("cancelCropBtn")?.addEventListener("click", cerrarModalEncuadre);
+    document.getElementById("applyCropBtn")?.addEventListener("click", aplicarEncuadre);
+    document.getElementById("cancelDeleteBtn")?.addEventListener("click", cerrarModalBorrado);
+    document.getElementById("confirmDeleteBtn")?.addEventListener("click", confirmarEliminacion);
+
+    cargarGaleria(seccionActual);
   };
 
   const esAdministrador = (usuario) => {
-    const login = usuario?.login || usuario?.username;
-    return login === ADMIN_GITHUB_LOGIN;
+    if (!usuario) return false;
+    const login = usuario.login || usuario.username || usuario.name;
+    return login?.toLowerCase() === ADMIN_GITHUB_LOGIN.toLowerCase();
   };
 
-  const rechazarSesion = async (authManager) => {
-    await authManager?.logout?.();
-    mostrarLogin(`Solo la cuenta de GitHub ${ADMIN_GITHUB_LOGIN} tiene acceso.`);
-  };
-
-  const obtenerAuthManager = () => {
-    const backend = window.CMS?.getBackend?.();
-    return backend?.authManager;
-  };
-
-  const activarLoginNativo = () => {
-    const authUrl = new URL("https://decap-oauth.25308167.workers.dev/auth");
-    authUrl.searchParams.set("provider", "github");
-    authUrl.searchParams.set("origin", window.location.origin);
-    window.location.assign(authUrl.href);
-    return true;
-  };
-
-  const inicializarCMS = async () => {
-    if (!window.CMS?.getBackend) return false;
-    await CMS_READY;
-    return Boolean(obtenerAuthManager());
-  };
-
-  const iniciarSesion = async () => {
-    const authManager = obtenerAuthManager();
-    if (!authManager) {
-      if (!activarLoginNativo()) {
-        mostrarLogin("No se pudo cargar el servicio de autenticación. Recarga la página.");
+  const obtenerUsuarioActual = async () => {
+    try {
+      if (window.CMS && typeof window.CMS.getBackend === "function") {
+        const backend = window.CMS.getBackend();
+        if (backend) {
+          const user = await backend.currentUser();
+          if (user) return user;
+        }
       }
+    } catch (e) {
+      console.warn("No se pudo obtener el usuario del backend:", e);
+    }
+    return null;
+  };
+
+  const iniciarSesion = () => {
+    if (!window.CMS) {
+      mostrarLogin("Error: Decap CMS no está disponible.");
       return;
     }
 
     loginButton.disabled = true;
-    loginButton.querySelector("span").textContent = "Conectando con GitHub...";
-    try {
-      const resultado = await authManager.authenticate();
-      const usuario = resultado?.user || await authManager.currentUser?.();
-      if (!esAdministrador(usuario)) {
-        await rechazarSesion(authManager);
+    const spanBtn = loginButton.querySelector("span");
+    if (spanBtn) spanBtn.textContent = "Conectando con GitHub...";
+
+    window.CMS.authenticate({ provider: "github" }, async (err) => {
+      loginButton.disabled = false;
+      if (spanBtn) spanBtn.textContent = "Iniciar Sesión con GitHub";
+
+      if (err) {
+        console.error("Error al autenticar:", err);
+        mostrarLogin("No se pudo completar el acceso con GitHub.");
         return;
       }
-      mostrarApp();
-    } catch (error) {
-      console.error("Error de autenticación:", error);
-      mostrarLogin("No se pudo iniciar sesión con GitHub.");
-      loginButton.disabled = false;
-      loginButton.querySelector("span").textContent = "Iniciar Sesión con GitHub";
-    }
+
+      const usuario = await obtenerUsuarioActual();
+      if (esAdministrador(usuario)) {
+        mostrarApp();
+      } else {
+        const userLogin = usuario?.login || "desconocida";
+        mostrarLogin(`Acceso denegado. La cuenta "${userLogin}" no es la cuenta administradora.`);
+      }
+    });
   };
 
   loginButton.addEventListener("click", iniciarSesion);
 
-  const comprobarSesion = async () => {
-    const authManager = obtenerAuthManager();
-    try {
-      const usuario = await authManager?.currentUser?.();
-      if (esAdministrador(usuario)) mostrarApp();
-      else if (usuario) await rechazarSesion(authManager);
-      else mostrarLogin();
-    } catch (error) {
-      console.error("Error al comprobar la sesión:", error);
+  // Verificar si ya hay una sesión activa guardada en localStorage
+  setTimeout(async () => {
+    const usuario = await obtenerUsuarioActual();
+    if (esAdministrador(usuario)) {
+      mostrarApp();
+    } else {
       mostrarLogin();
     }
-  };
-
-  inicializarCMS()
-    .then((inicializado) => {
-      if (inicializado) comprobarSesion();
-      else mostrarLogin();
-    })
-    .catch((error) => {
-      console.error("Error al inicializar Decap CMS:", error);
-      mostrarLogin("No se pudo cargar el servicio de autenticación. Recarga la página.");
-    });
+  }, 500);
 });
 
 function resolverRutaImagen(src) {
@@ -163,6 +144,7 @@ async function cargarGaleria(seccion) {
 
 function renderizarGrilla() {
   const grid = document.getElementById("galleryGrid");
+  if (!grid) return;
   grid.innerHTML = "";
 
   if (listaImagenes.length === 0) {
@@ -187,7 +169,6 @@ function renderizarGrilla() {
     const overlay = document.createElement("div");
     overlay.className = "absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3";
 
-    // Botones superior (mover / solicitar eliminación)
     const topBar = document.createElement("div");
     topBar.className = "flex justify-between items-center";
 
@@ -195,19 +176,16 @@ function renderizarGrilla() {
     navGroup.className = "flex gap-1";
 
     if (index > 0) {
-      const prevBtn = crearBotonControl("←", () => moverImagen(index, -1));
-      navGroup.appendChild(prevBtn);
+      navGroup.appendChild(crearBotonControl("←", () => moverImagen(index, -1)));
     }
     if (index < listaImagenes.length - 1) {
-      const nextBtn = crearBotonControl("→", () => moverImagen(index, 1));
-      navGroup.appendChild(nextBtn);
+      navGroup.appendChild(crearBotonControl("→", () => moverImagen(index, 1)));
     }
 
     const deleteBtn = crearBotonControl("✕", () => solicitarEliminacion(index), "bg-red-600/80 hover:bg-red-600");
     topBar.appendChild(navGroup);
     topBar.appendChild(deleteBtn);
 
-    // Botón ajustar encuadre
     const cropBtn = document.createElement("button");
     cropBtn.className = "w-full py-1.5 bg-white/90 hover:bg-white text-slate-900 text-xs font-bold rounded-lg transition";
     cropBtn.textContent = "Ajustar Encuadre";
@@ -273,15 +251,14 @@ function moverImagen(index, direccion) {
   renderizarGrilla();
 }
 
-// --- Lógica del Modal de Confirmación de Borrado ---
 function solicitarEliminacion(index) {
   indiceAEliminar = index;
-  document.getElementById("deleteModal").classList.remove("hidden");
+  document.getElementById("deleteModal")?.classList.remove("hidden");
 }
 
 function cerrarModalBorrado() {
   indiceAEliminar = null;
-  document.getElementById("deleteModal").classList.add("hidden");
+  document.getElementById("deleteModal")?.classList.add("hidden");
 }
 
 function confirmarEliminacion() {
@@ -310,7 +287,8 @@ function abrirModalEncuadre(index) {
   indiceEncuadre = index;
   const modal = document.getElementById("cropModal");
   const cropImage = document.getElementById("cropImage");
-  
+  if (!modal || !cropImage) return;
+
   cropImage.src = resolverRutaImagen(listaImagenes[index].src);
   modal.classList.remove("hidden");
 
@@ -324,7 +302,7 @@ function abrirModalEncuadre(index) {
 }
 
 function cerrarModalEncuadre() {
-  document.getElementById("cropModal").classList.add("hidden");
+  document.getElementById("cropModal")?.classList.add("hidden");
   if (cropperInstance) cropperInstance.destroy();
 }
 
@@ -343,6 +321,8 @@ async function guardarDirectoEnGitHub() {
   const btn = document.getElementById("saveBtn");
   const alertBox = document.getElementById("statusAlert");
 
+  if (!btn || !alertBox) return;
+
   btn.disabled = true;
   btn.innerText = "Publicando cambios...";
   alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-blue-100 text-blue-800";
@@ -353,18 +333,47 @@ async function guardarDirectoEnGitHub() {
   const contenidoJson = JSON.stringify({ imagenes: listaImagenes }, null, 2);
 
   try {
-    if (window.CMS && typeof window.CMS.getBackend === 'function') {
+    if (window.CMS && typeof window.CMS.getBackend === "function") {
       const backend = window.CMS.getBackend();
-      if (backend && backend.persistEntry) {
-        await backend.persistEntry({
-          path: configSeccion.githubPath,
-          data: contenidoJson,
-          slug: seccionActual,
-          raw: contenidoJson
+      const user = await backend?.currentUser();
+
+      if (user && user.token) {
+        // Enviar commit a la API REST de GitHub usando el Token JWT/OAuth obtenido por Decap CMS
+        const repo = "Dean-koro/DecoDiseno";
+        const path = configSeccion.githubPath;
+        const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+
+        // Obtener SHA actual del archivo para actualizarlo sin conflictos
+        let sha = "";
+        const getRes = await fetch(url, {
+          headers: { Authorization: `token ${user.token}` }
+        });
+        if (getRes.ok) {
+          const fileData = await getRes.json();
+          sha = fileData.sha;
+        }
+
+        // Subir commit directo a main
+        const putRes = await fetch(url, {
+          method: "PUT",
+          headers: {
+            Authorization: `token ${user.token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: `Actualizar galería de ${seccionActual} desde panel admin`,
+            content: btoa(unescape(encodeURIComponent(contenidoJson))),
+            sha: sha || undefined,
+            branch: "main"
+          })
         });
 
-        alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-green-100 text-green-800";
-        alertBox.textContent = "¡Cambios publicados exitosamente en GitHub!";
+        if (putRes.ok) {
+          alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-green-100 text-green-800";
+          alertBox.textContent = "¡Cambios publicados exitosamente en GitHub!";
+        } else {
+          throw new Error(`GitHub API Error: ${putRes.status}`);
+        }
       } else {
         descargarJsonFallback(contenidoJson, configSeccion.githubPath);
       }
@@ -382,9 +391,9 @@ async function guardarDirectoEnGitHub() {
 
 function descargarJsonFallback(jsonStr, rutaArchivo) {
   const alertBox = document.getElementById("statusAlert");
-  const nombreArchivo = rutaArchivo.split('/').pop();
+  const nombreArchivo = rutaArchivo.split("/").pop();
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonStr);
-  
+
   const downloadAnchor = document.createElement("a");
   downloadAnchor.setAttribute("href", dataStr);
   downloadAnchor.setAttribute("download", nombreArchivo);
@@ -392,6 +401,8 @@ function descargarJsonFallback(jsonStr, rutaArchivo) {
   downloadAnchor.click();
   downloadAnchor.remove();
 
-  alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-amber-100 text-amber-800";
-  alertBox.innerHTML = `No hay sesión activa de GitHub. Se ha descargado <strong>${nombreArchivo}</strong> para guardar en <code>${rutaArchivo}</code>.`;
+  if (alertBox) {
+    alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-amber-100 text-amber-800";
+    alertBox.innerHTML = `No hay sesión activa de GitHub. Se ha descargado <strong>${nombreArchivo}</strong> para guardar manualmente en <code>${rutaArchivo}</code>.`;
+  }
 }

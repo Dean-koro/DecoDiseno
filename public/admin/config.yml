@@ -46,7 +46,7 @@ collections:
         label: "Galería de Toldos"
         name: "toldos"
         media_folder: "/public/imagenes/toldos"
-        public_folder: "imagenes/toldos"
+        public_folder: "/imagenes/toldos"
         fields:
           - label: "Imágenes"
             name: "imagenes"
