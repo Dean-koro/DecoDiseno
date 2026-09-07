@@ -1,0 +1,103 @@
+backend:
+  name: github
+  repo: Dean-koro/DecoDiseno
+  branch: main
+  base_url: https://decap-oauth.25308167.workers.dev
+
+
+media_folder: "public/imagenes"
+public_folder: "imagenes"
+
+collections:
+  - name: "galerias"
+    label: "Galerías de Servicios"
+    files:
+      - file: "public/content/galeria-cortinas.json"
+        label: "Galería de Cortinas y Persianas"
+        name: "cortinas"
+        media_folder: "/public/imagenes/cortinas"
+        public_folder: "/imagenes/cortinas"
+        fields:
+          - label: "Imágenes"
+            name: "imagenes"
+            widget: "list"
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - { label: "Imagen", name: "src", widget: "image" }
+              - { label: "Texto alternativo (Alt)", name: "alt", widget: "string" }
+
+      - file: "public/content/galeria-tapiceria-mobi.json"
+        label: "Galería de Tapicería Residencial"
+        name: "tapiceria_mobi"
+        media_folder: "/public/imagenes/tapiceria-mobi"
+        public_folder: "/imagenes/tapiceria-mobi"
+        fields:
+          - label: "Imágenes"
+            name: "imagenes"
+            widget: "list"
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - { label: "Imagen", name: "src", widget: "image" }
+              - { label: "Texto alternativo (Alt)", name: "alt", widget: "string" }
+
+      - file: "public/content/galeria-toldos.json"
+        label: "Galería de Toldos"
+        name: "toldos"
+        media_folder: "/public/imagenes/toldos"
+        public_folder: "imagenes/toldos"
+        fields:
+          - label: "Imágenes"
+            name: "imagenes"
+            widget: "list"
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - { label: "Imagen", name: "src", widget: "image" }
+              - { label: "Texto alternativo (Alt)", name: "alt", widget: "string" }
+
+      - file: "public/content/galeria-tapiceria-auto.json"
+        label: "Galería de Tapicería Automotriz"
+        name: "tapiceria_auto"
+        media_folder: "/public/imagenes/tapiceria-auto"
+        public_folder: "/imagenes/tapiceria-auto"
+        fields:
+          - label: "Imágenes"
+            name: "imagenes"
+            widget: "list"
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - { label: "Imagen", name: "src", widget: "image" }
+              - { label: "Texto alternativo (Alt)", name: "alt", widget: "string" }
+
+      - file: "public/content/galeria-tapiceria-nautica.json"
+        label: "Galería de Tapicería Náutica"
+        name: "tapiceria_nautica"
+        media_folder: "/public/imagenes/tapiceria-nautica"
+        public_folder: "/imagenes/tapiceria-nautica"
+        fields:
+          - label: "Imágenes"
+            name: "imagenes"
+            widget: "list"
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - { label: "Imagen", name: "src", widget: "image" }
+              - { label: "Texto alternativo (Alt)", name: "alt", widget: "string" }
+
+      - file: "public/content/galeria-exterior.json"
+        label: "Galería de Tapicería Exterior"
+        name: "tapiceria_exterior"
+        media_folder: "/public/imagenes/exterior"
+        public_folder: "/imagenes/exterior"
+        fields:
+          - label: "Imágenes"
+            name: "imagenes"
+            widget: "list"
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - { label: "Imagen", name: "src", widget: "image" }
+              - { label: "Texto alternativo (Alt)", name: "alt", widget: "string" }

@@ -1,0 +1,21 @@
+{
+    "imagenes": 
+    [
+        { "src": "imagenes/exterior/exterior-galeria-1.jpeg", "alt": "imagen 1" },
+        { "src": "imagenes/exterior/exterior-galeria-2.jpeg", "alt": "imagen 2" },
+        { "src": "imagenes/exterior/exterior-galeria-3.jpeg", "alt": "imagen 3" },
+        { "src": "imagenes/exterior/exterior-galeria-4.jpeg", "alt": "imagen 4" },
+        { "src": "imagenes/exterior/exterior-galeria-5.jpeg", "alt": "imagen 5" },
+        { "src": "imagenes/exterior/exterior-galeria-6.jpeg", "alt": "imagen 6" },
+        { "src": "imagenes/exterior/exterior-galeria-7.jpeg", "alt": "imagen 7" },
+        { "src": "imagenes/exterior/exterior-galeria-8.jpeg", "alt": "imagen 8" },
+        { "src": "imagenes/exterior/exterior-galeria-9.jpeg", "alt": "imagen 9" },
+        { "src": "imagenes/exterior/exterior-galeria-10.jpeg", "alt": "imagen 10" },
+        { "src": "imagenes/exterior/exterior-galeria-11.jpeg", "alt": "imagen 11" },
+        { "src": "imagenes/exterior/exterior-galeria-12.jpeg", "alt": "imagen 12" },
+        { "src": "imagenes/exterior/exterior-galeria-13.jpeg", "alt": "imagen 13" },
+        { "src": "imagenes/exterior/exterior-galeria-14.jpeg", "alt": "imagen 14" },
+        { "src": "imagenes/exterior/exterior-galeria-15.jpeg", "alt": "imagen 15" },
+        { "src": "imagenes/exterior/exterior-galeria-16.jpeg", "alt": "imagen 16" }
+    ]
+}

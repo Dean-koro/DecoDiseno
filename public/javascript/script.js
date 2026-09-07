@@ -1,4 +1,56 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ==========================================
+  // 1. CARGA DINÁMICA DE GALERÍAS (CORREGIDO)
+  // ==========================================
+  const loadDynamicGalleries = async () => {
+    const tracks = document.querySelectorAll('[id^="galleryTrack"]');
+
+    for (const track of tracks) {
+      // Busca la ruta del JSON en el atributo data-gallery-src
+      const jsonPath = track.dataset.gallerySrc || "public/content/galeria-cortinas.json";
+
+      try {
+        const response = await fetch(jsonPath);
+        if (!response.ok) continue;
+
+        const data = await response.json();
+
+        // Extraer la lista de imágenes (soporta tanto { imagenes: [] } como [] por compatibilidad)
+        const imageList = Array.isArray(data)
+          ? data
+          : (data && Array.isArray(data.imagenes) ? data.imagenes : []);
+
+        if (imageList.length === 0) {
+          track.innerHTML = `
+            <div class="flex items-center justify-center min-w-full h-72 text-gray-400 font-medium">
+              Próximamente imágenes en esta galería.
+            </div>`;
+          continue;
+        }
+
+        // Renderizar imágenes dentro del contenedor
+        track.innerHTML = imageList
+          .map(
+            (img, index) => `
+          <img src="${img.src}" alt="${img.alt || "Imagen " + (index + 1)}"
+            class="gallery-item min-w-[clamp(260px,34vw,360px)] h-72 flex-none rounded-2xl object-cover snap-start cursor-grab transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-lg" />
+        `
+          )
+          .join("");
+      } catch (error) {
+        console.error(`Error cargando la galería desde ${jsonPath}:`, error);
+      }
+    }
+
+    // Re-inicializar imágenes con la función de ampliación/lightbox
+    initZoomableImages();
+  };
+
+  // ==========================================
+  // 2. TUS FUNCIONALIDADES EXISTENTES
+  // ==========================================
+
+  // Botón flotante de Instagram
   const instagramLink = document.createElement("a");
   instagramLink.href =
     "https://www.instagram.com/deco.diseno.oficial?stkn=ejA0ZHhvcXR5ZmM4";
@@ -11,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     '<svg class="h-[26px] w-[26px] fill-none stroke-current" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
   document.body.appendChild(instagramLink);
 
+  // Menú móvil
   const menuButton = document.querySelector('button[aria-label="Menu"]');
   let mobileMenu = null;
 
@@ -45,20 +98,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Desplazamiento suave al formulario
   document.querySelector("#scroll-to-form")?.addEventListener("click", () => {
     document.getElementById("formulario")?.scrollIntoView({
       behavior: "smooth",
     });
   });
 
-  const galleryItems = [...document.querySelectorAll(".gallery-item")];
-  const projectImages = [...document.querySelectorAll('img[src^="imagenes/"]')]
-    .filter((image) => !image.classList.contains("gallery-item"));
-  const zoomableImages = [...new Set([...galleryItems, ...projectImages])];
-
+  // Marca de agua en descargas
   const downloadWithWatermark = (
     imageSource,
-    filename = "imagen-decodiseno.jpg",
+    filename = "imagen-decodiseno.jpg"
   ) => {
     const image = new Image();
     image.onload = () => {
@@ -100,25 +150,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("contextmenu", (event) => {
     const image = event.target.closest(
-      'img[src^="imagenes/"], .gallery-overlay-image, #lightbox-img',
+      'img[src^="imagenes/"], .gallery-overlay-image, #lightbox-img'
     );
     if (!image) return;
     event.preventDefault();
     downloadWithWatermark(image.currentSrc || image.src);
   });
 
+  // Arrastre y botones de desplazamiento del carrusel
   document.querySelectorAll('[id^="galleryTrack"]').forEach((track) => {
     const wrapper = track.closest("section") || track.parentElement;
     const previous = wrapper.querySelector('[id^="prevGallery"]');
     const next = wrapper.querySelector('[id^="nextGallery"]');
     const getScrollAmount = () => Math.max(track.clientWidth * 0.8, 280);
-    previous?.addEventListener(
-      "click",
-      () => track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" }),
+    previous?.addEventListener("click", () =>
+      track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" })
     );
-    next?.addEventListener(
-      "click",
-      () => track.scrollBy({ left: getScrollAmount(), behavior: "smooth" }),
+    next?.addEventListener("click", () =>
+      track.scrollBy({ left: getScrollAmount(), behavior: "smooth" })
     );
     let dragging = false;
     let moved = false;
@@ -138,12 +187,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Math.abs(distance) > 6) moved = true;
       track.scrollLeft = startScrollLeft - distance;
     });
-    track.addEventListener("click", (event) => {
-      if (moved) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    }, true);
+    track.addEventListener(
+      "click",
+      (event) => {
+        if (moved) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      },
+      true
+    );
     const stopDragging = () => {
       dragging = false;
       track.classList.remove("cursor-grabbing", "select-none");
@@ -153,9 +206,11 @@ document.addEventListener("DOMContentLoaded", () => {
     track.addEventListener("pointerleave", stopDragging);
   });
 
+  // Lightbox / Overlay de ampliación
   let galleryOverlay = document.getElementById("galleryOverlay");
   let galleryOverlayContent = document.getElementById("galleryOverlayContent");
-  if (!galleryOverlay && zoomableImages.length) {
+
+  if (!galleryOverlay) {
     galleryOverlay = document.createElement("div");
     galleryOverlay.id = "galleryOverlay";
     galleryOverlay.className =
@@ -165,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
       '<div class="relative w-[min(900px,90vw)] max-h-[85vh] bg-white/95 border border-white/30 rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.28)] animate-modalIn"><button class="gallery-overlay-close absolute top-4 right-4 z-[2] w-10 h-10 rounded-full border border-[#181e29]/15 bg-white/80 text-gray-800 text-2xl leading-none cursor-pointer" type="button" aria-label="Cerrar vista ampliada">×</button><div id="galleryOverlayContent" class="w-full min-h-[420px] flex items-center justify-center bg-gradient-to-br from-[#f7f2ea] to-[#dfe5d8] text-[#181e29]/70 text-[clamp(0.75rem,1vw,1rem)] font-semibold tracking-[0.22em] uppercase p-8 text-center"></div></div>';
     document.body.appendChild(galleryOverlay);
     galleryOverlayContent = galleryOverlay.querySelector(
-      "#galleryOverlayContent",
+      "#galleryOverlayContent"
     );
   }
 
@@ -173,10 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
     galleryOverlayContent.classList.add("gallery-overlay-content");
   }
 
-  let currentImage = null;
   const openGalleryImage = (image) => {
     if (!galleryOverlay || !galleryOverlayContent) return;
-    currentImage = image;
     galleryOverlayContent.innerHTML = "";
     const enlargedImage = document.createElement("img");
     enlargedImage.src = image.currentSrc || image.src;
@@ -188,6 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
     galleryOverlay.setAttribute("aria-hidden", "false");
     document.body.classList.add("gallery-open");
   };
+
   const closeGalleryImage = () => {
     galleryOverlay?.classList.remove("active");
     galleryOverlay?.classList.remove("flex");
@@ -196,33 +250,41 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove("gallery-open");
   };
 
-  zoomableImages.forEach((image) => {
-    let startX = 0;
-    let startY = 0;
-    image.addEventListener("pointerdown", (event) => {
-      startX = event.clientX;
-      startY = event.clientY;
+  // Función para vincular eventos de zoom a las imágenes generadas
+  const initZoomableImages = () => {
+    const galleryItems = [...document.querySelectorAll(".gallery-item")];
+    const projectImages = [
+      ...document.querySelectorAll('img[src^="imagenes/"]'),
+    ].filter((image) => !image.classList.contains("gallery-item"));
+    const zoomableImages = [...new Set([...galleryItems, ...projectImages])];
+
+    zoomableImages.forEach((image) => {
+      let startX = 0;
+      let startY = 0;
+      image.addEventListener("pointerdown", (event) => {
+        startX = event.clientX;
+        startY = event.clientY;
+      });
+      image.addEventListener("pointerup", (event) => {
+        if (event.button !== 0) return;
+        const distance = Math.hypot(
+          event.clientX - startX,
+          event.clientY - startY
+        );
+        if (distance <= 6) openGalleryImage(image);
+      });
     });
-    image.addEventListener("pointerup", (event) => {
-      if (event.button !== 0) return;
-      const distance = Math.hypot(
-        event.clientX - startX,
-        event.clientY - startY,
-      );
-      if (distance <= 6) openGalleryImage(image);
-    });
-  });
-  galleryOverlay?.querySelector(".gallery-overlay-close")?.addEventListener(
-    "click",
-    closeGalleryImage,
-  );
+  };
+
+  galleryOverlay
+    ?.querySelector(".gallery-overlay-close")
+    ?.addEventListener("click", closeGalleryImage);
   galleryOverlay?.addEventListener("click", (event) => {
     if (event.target === galleryOverlay) closeGalleryImage();
   });
   document.addEventListener("keydown", (event) => {
-    if (
-      event.key === "Escape" && galleryOverlay?.classList.contains("active")
-    ) closeGalleryImage();
+    if (event.key === "Escape" && galleryOverlay?.classList.contains("active"))
+      closeGalleryImage();
   });
 
   window.closeLightbox = () => {
@@ -230,8 +292,10 @@ document.addEventListener("DOMContentLoaded", () => {
     lightbox?.classList.add("hidden");
     lightbox?.classList.remove("flex");
   };
-  document.querySelector("#lightbox-close")?.addEventListener(
-    "click",
-    window.closeLightbox,
-  );
+  document
+    .querySelector("#lightbox-close")
+    ?.addEventListener("click", window.closeLightbox);
+
+  // Ejecución de la carga inicial
+  loadDynamicGalleries();
 });

@@ -1,0 +1,9 @@
+{
+    "imagenes": [
+    { "src": "imagenes/tapiceria-nautica/nautico-galeria-1.jpeg", "alt": "imagen 1" },
+    { "src": "imagenes/tapiceria-nautica/nautico-galeria-2.jpeg", "alt": "imagen 2" },
+    { "src": "imagenes/tapiceria-nautica/nautico-galeria-3.jpeg", "alt": "imagen 3" },
+    { "src": "imagenes/tapiceria-nautica/nautico-galeria-4.jpeg", "alt": "imagen 4" },
+    { "src": "imagenes/tapiceria-nautica/nautico-galeria-5.jpeg", "alt": "imagen 5" }
+]
+}
