@@ -8,6 +8,8 @@ const SECCIONES = {
 };
 
 const ADMIN_GITHUB_LOGIN = "bot-DecoDiseno";
+const REPO_OWNER_NAME = "Dean-koro/DecoDiseno";
+const OAUTH_WORKER_URL = "https://decap-oauth.25308167.workers.dev/auth?provider=github&scope=repo";
 
 let listaImagenes = [];
 let seccionActual = "cortinas";
@@ -15,21 +17,15 @@ let cropperInstance = null;
 let indiceEncuadre = null;
 let indiceAEliminar = null;
 
-// Inicialización
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Inicializar Decap CMS
-  if (window.CMS && typeof window.CMS.init === "function") {
-    window.CMS.init();
-  }
-
   const loginButton = document.getElementById("loginGitHubBtn");
   const loginScreen = document.getElementById("loginScreen");
   const loginError = document.getElementById("loginError");
   const app = document.getElementById("app");
 
   const mostrarLogin = (mensaje = "") => {
-    loginScreen.classList.remove("hidden");
-    app.classList.add("hidden");
+    loginScreen?.classList.remove("hidden");
+    app?.classList.add("hidden");
     if (loginError) {
       loginError.textContent = mensaje;
       loginError.classList.toggle("hidden", !mensaje);
@@ -37,8 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const mostrarApp = () => {
-    loginScreen.classList.add("hidden");
-    app.classList.remove("hidden");
+    loginScreen?.classList.add("hidden");
+    app?.classList.remove("hidden");
 
     document.getElementById("sectionSelect")?.addEventListener("change", (e) => cargarGaleria(e.target.value));
     document.getElementById("saveBtn")?.addEventListener("click", guardarDirectoEnGitHub);
@@ -56,62 +52,103 @@ document.addEventListener("DOMContentLoaded", () => {
     return login?.toLowerCase() === ADMIN_GITHUB_LOGIN.toLowerCase();
   };
 
-  const obtenerUsuarioActual = async () => {
+  // Validar si tenemos un token en localStorage y consultar /user a la API de GitHub
+  const verificarSesionExistente = async () => {
+    const token = localStorage.getItem("github_token");
+    if (!token) return null;
+
     try {
-      if (window.CMS && typeof window.CMS.getBackend === "function") {
-        const backend = window.CMS.getBackend();
-        if (backend) {
-          const user = await backend.currentUser();
-          if (user) return user;
-        }
+      const res = await fetch("https://api.github.com/user", {
+        headers: { Authorization: `token ${token}` }
+      });
+      if (res.ok) {
+        return await res.json();
+      } else {
+        localStorage.removeItem("github_token");
       }
     } catch (e) {
-      console.warn("No se pudo obtener el usuario del backend:", e);
+      console.warn("Error al verificar token existente:", e);
     }
     return null;
   };
 
-  const iniciarSesion = () => {
-    if (!window.CMS) {
-      mostrarLogin("Error: Decap CMS no está disponible.");
-      return;
-    }
+  const iniciarSesionOAuth = () => {
+    if (!loginButton) return;
 
     loginButton.disabled = true;
     const spanBtn = loginButton.querySelector("span");
     if (spanBtn) spanBtn.textContent = "Conectando con GitHub...";
 
-    window.CMS.authenticate({ provider: "github" }, async (err) => {
+    // Configurar ventana emergente
+    const width = 600, height = 700;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+
+    const popup = window.open(
+      OAUTH_WORKER_URL,
+      "GitHub_OAuth",
+      `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`
+    );
+
+    if (!popup) {
+      alert("Por favor habilita las ventanas emergentes (pop-ups) en tu navegador para continuar.");
       loginButton.disabled = false;
       if (spanBtn) spanBtn.textContent = "Iniciar Sesión con GitHub";
+      return;
+    }
 
-      if (err) {
-        console.error("Error al autenticar:", err);
-        mostrarLogin("No se pudo completar el acceso con GitHub.");
-        return;
-      }
+    // Escuchar la respuesta postMessage proveniente del Worker de Cloudflare
+    const handleMessage = async (event) => {
+      if (event.data && typeof event.data === "string" && event.data.startsWith("authorization:github:success:")) {
+        window.removeEventListener("message", handleMessage);
 
-      const usuario = await obtenerUsuarioActual();
-      if (esAdministrador(usuario)) {
-        mostrarApp();
-      } else {
-        const userLogin = usuario?.login || "desconocida";
-        mostrarLogin(`Acceso denegado. La cuenta "${userLogin}" no es la cuenta administradora.`);
+        try {
+          const rawData = event.data.replace("authorization:github:success:", "");
+          const parsedData = JSON.parse(rawData);
+          const token = parsedData.token;
+
+          if (token) {
+            localStorage.setItem("github_token", token);
+
+            // Obtener perfil del usuario desde GitHub
+            const userRes = await fetch("https://api.github.com/user", {
+              headers: { Authorization: `token ${token}` }
+            });
+
+            if (userRes.ok) {
+              const usuario = await userRes.json();
+              if (esAdministrador(usuario)) {
+                mostrarApp();
+              } else {
+                mostrarLogin(`Acceso denegado. La cuenta "${usuario.login}" no está autorizada.`);
+              }
+            } else {
+              mostrarLogin("Error al verificar los datos de la cuenta en GitHub.");
+            }
+          }
+        } catch (e) {
+          console.error("Error procesando mensaje OAuth:", e);
+          mostrarLogin("Error al procesar la respuesta de autenticación.");
+        } finally {
+          loginButton.disabled = false;
+          if (spanBtn) spanBtn.textContent = "Iniciar Sesión con GitHub";
+        }
       }
-    });
+    };
+
+    window.addEventListener("message", handleMessage, false);
   };
 
-  loginButton.addEventListener("click", iniciarSesion);
+  loginButton?.addEventListener("click", iniciarSesionOAuth);
 
-  // Verificar si ya hay una sesión activa guardada en localStorage
-  setTimeout(async () => {
-    const usuario = await obtenerUsuarioActual();
+  // Verificar si ya hay una sesión guardada
+  verificarSesionExistente().then((usuario) => {
     if (esAdministrador(usuario)) {
       mostrarApp();
     } else {
       mostrarLogin();
     }
-  }, 500);
+  });
 });
 
 function resolverRutaImagen(src) {
@@ -331,54 +368,49 @@ async function guardarDirectoEnGitHub() {
 
   const configSeccion = SECCIONES[seccionActual];
   const contenidoJson = JSON.stringify({ imagenes: listaImagenes }, null, 2);
+  const token = localStorage.getItem("github_token");
+
+  if (!token) {
+    descargarJsonFallback(contenidoJson, configSeccion.githubPath);
+    btn.disabled = false;
+    btn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Publicar Cambios en la Web`;
+    return;
+  }
 
   try {
-    if (window.CMS && typeof window.CMS.getBackend === "function") {
-      const backend = window.CMS.getBackend();
-      const user = await backend?.currentUser();
+    const url = `https://api.github.com/repos/${REPO_OWNER_NAME}/contents/${configSeccion.githubPath}`;
 
-      if (user && user.token) {
-        // Enviar commit a la API REST de GitHub usando el Token JWT/OAuth obtenido por Decap CMS
-        const repo = "Dean-koro/DecoDiseno";
-        const path = configSeccion.githubPath;
-        const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+    // 1. Obtener SHA actual del archivo JSON en GitHub
+    let sha = "";
+    const getRes = await fetch(url, {
+      headers: { Authorization: `token ${token}` }
+    });
 
-        // Obtener SHA actual del archivo para actualizarlo sin conflictos
-        let sha = "";
-        const getRes = await fetch(url, {
-          headers: { Authorization: `token ${user.token}` }
-        });
-        if (getRes.ok) {
-          const fileData = await getRes.json();
-          sha = fileData.sha;
-        }
+    if (getRes.ok) {
+      const fileData = await getRes.json();
+      sha = fileData.sha;
+    }
 
-        // Subir commit directo a main
-        const putRes = await fetch(url, {
-          method: "PUT",
-          headers: {
-            Authorization: `token ${user.token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: `Actualizar galería de ${seccionActual} desde panel admin`,
-            content: btoa(unescape(encodeURIComponent(contenidoJson))),
-            sha: sha || undefined,
-            branch: "main"
-          })
-        });
+    // 2. Subir nuevo Commit a GitHub (rama main)
+    const putRes = await fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `token ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: `Actualizar galería de ${seccionActual} desde panel admin`,
+        content: btoa(unescape(encodeURIComponent(contenidoJson))),
+        sha: sha || undefined,
+        branch: "main"
+      })
+    });
 
-        if (putRes.ok) {
-          alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-green-100 text-green-800";
-          alertBox.textContent = "¡Cambios publicados exitosamente en GitHub!";
-        } else {
-          throw new Error(`GitHub API Error: ${putRes.status}`);
-        }
-      } else {
-        descargarJsonFallback(contenidoJson, configSeccion.githubPath);
-      }
+    if (putRes.ok) {
+      alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-green-100 text-green-800";
+      alertBox.textContent = "¡Cambios publicados exitosamente en GitHub!";
     } else {
-      descargarJsonFallback(contenidoJson, configSeccion.githubPath);
+      throw new Error(`GitHub API Error: ${putRes.status}`);
     }
   } catch (err) {
     console.error("Error al publicar:", err);
@@ -403,6 +435,6 @@ function descargarJsonFallback(jsonStr, rutaArchivo) {
 
   if (alertBox) {
     alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-amber-100 text-amber-800";
-    alertBox.innerHTML = `No hay sesión activa de GitHub. Se ha descargado <strong>${nombreArchivo}</strong> para guardar manualmente en <code>${rutaArchivo}</code>.`;
+    alertBox.innerHTML = `No hay sesión activa o el token venció. Se ha descargado <strong>${nombreArchivo}</strong> para guardar manualmente en <code>${rutaArchivo}</code>.`;
   }
 }
