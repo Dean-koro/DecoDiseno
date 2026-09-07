@@ -2,7 +2,7 @@ backend:
   name: github
   repo: Dean-koro/DecoDiseno
   branch: main
-  base_url: https://decap-oauth.25308167.workers.dev
+  base_url: https://auth.decodiseno.com.mx
 
 
 media_folder: "public/imagenes"

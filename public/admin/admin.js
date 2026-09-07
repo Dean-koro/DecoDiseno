@@ -9,7 +9,7 @@ const SECCIONES = {
 
 const ADMIN_GITHUB_LOGIN = "bot-DecoDiseno";
 const REPO_OWNER_NAME = "Dean-koro/DecoDiseno";
-const OAUTH_WORKER_URL = "https://decap-oauth.25308167.workers.dev/auth?provider=github&scope=repo";
+const OAUTH_WORKER_URL = "https://auth.decodiseno.com.mx/auth";
 
 let listaImagenes = [];
 let seccionActual = "cortinas";
@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const spanBtn = loginButton.querySelector("span");
     if (spanBtn) spanBtn.textContent = "Conectando con GitHub...";
 
-    // Configurar ventana emergente
     const width = 600, height = 700;
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
@@ -97,46 +96,61 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Escuchar la respuesta postMessage proveniente del Worker de Cloudflare
     const handleMessage = async (event) => {
-      if (event.data && typeof event.data === "string" && event.data.startsWith("authorization:github:success:")) {
-        window.removeEventListener("message", handleMessage);
+      // Solo procesamos mensajes con el formato correcto
+      if (typeof event.data !== "string" || !event.data.startsWith("authorization:github:success:")) {
+        return;
+      }
 
-        try {
-          const rawData = event.data.replace("authorization:github:success:", "");
-          const parsedData = JSON.parse(rawData);
-          const token = parsedData.token;
+      // Limpiar listener y cerrar popup
+      window.removeEventListener("message", handleMessage);
+      if (popup && !popup.closed) popup.close();
 
-          if (token) {
-            localStorage.setItem("github_token", token);
+      try {
+        const rawData = event.data.replace("authorization:github:success:", "");
+        const parsedData = JSON.parse(rawData);
+        const token = parsedData.token;
 
-            // Obtener perfil del usuario desde GitHub
-            const userRes = await fetch("https://api.github.com/user", {
-              headers: { Authorization: `token ${token}` }
-            });
+        if (!token) throw new Error("No se recibió token");
 
-            if (userRes.ok) {
-              const usuario = await userRes.json();
-              if (esAdministrador(usuario)) {
-                mostrarApp();
-              } else {
-                mostrarLogin(`Acceso denegado. La cuenta "${usuario.login}" no está autorizada.`);
-              }
-            } else {
-              mostrarLogin("Error al verificar los datos de la cuenta en GitHub.");
-            }
-          }
-        } catch (e) {
-          console.error("Error procesando mensaje OAuth:", e);
-          mostrarLogin("Error al procesar la respuesta de autenticación.");
-        } finally {
-          loginButton.disabled = false;
-          if (spanBtn) spanBtn.textContent = "Iniciar Sesión con GitHub";
+        localStorage.setItem("github_token", token);
+
+        // Verificar el usuario
+        const userRes = await fetch("https://api.github.com/user", {
+          headers: { Authorization: `token ${token}` }
+        });
+
+        if (!userRes.ok) throw new Error("Error al verificar usuario");
+
+        const usuario = await userRes.json();
+
+        if (esAdministrador(usuario)) {
+          mostrarApp();
+        } else {
+          localStorage.removeItem("github_token");
+          mostrarLogin(`Acceso denegado. La cuenta "${usuario.login}" no está autorizada.`);
         }
+      } catch (e) {
+        console.error("Error procesando OAuth:", e);
+        localStorage.removeItem("github_token");
+        mostrarLogin("Error al procesar la autenticación.");
+      } finally {
+        loginButton.disabled = false;
+        if (spanBtn) spanBtn.textContent = "Iniciar Sesión con GitHub";
       }
     };
 
-    window.addEventListener("message", handleMessage, false);
+    window.addEventListener("message", handleMessage);
+
+    // Si el usuario cierra el popup manualmente, restauramos el botón
+    const checkClosed = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(checkClosed);
+        window.removeEventListener("message", handleMessage);
+        loginButton.disabled = false;
+        if (spanBtn) spanBtn.textContent = "Iniciar Sesión con GitHub";
+      }
+    }, 500);
   };
 
   loginButton?.addEventListener("click", iniciarSesionOAuth);
