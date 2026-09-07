@@ -6,6 +6,7 @@ const SECCIONES = {
   tapiceria_nautica: { jsonFile: "../content/galeria-tapiceria-nautica.json", githubPath: "public/content/galeria-tapiceria-nautica.json" },
   tapiceria_exterior: { jsonFile: "../content/galeria-exterior.json", githubPath: "public/content/galeria-exterior.json" }
 };
+const ADMIN_GITHUB_LOGIN = "bot-DecoDiseno";
 
 let listaImagenes = [];
 let seccionActual = "cortinas";
@@ -15,16 +16,86 @@ let indiceAEliminar = null;
 
 // Inicialización de Listeners de Eventos DOM
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("sectionSelect").addEventListener("change", (e) => cargarGaleria(e.target.value));
-  document.getElementById("saveBtn").addEventListener("click", guardarDirectoEnGitHub);
-  document.getElementById("cancelCropBtn").addEventListener("click", cerrarModalEncuadre);
-  document.getElementById("applyCropBtn").addEventListener("click", aplicarEncuadre);
+  const loginButton = document.getElementById("loginGitHubBtn");
+  const loginScreen = document.getElementById("loginScreen");
+  const loginError = document.getElementById("loginError");
+  const app = document.getElementById("app");
 
-  // Listeners del Modal de Confirmación de Borrado
-  document.getElementById("cancelDeleteBtn").addEventListener("click", cerrarModalBorrado);
-  document.getElementById("confirmDeleteBtn").addEventListener("click", confirmarEliminacion);
+  const mostrarLogin = (mensaje = "") => {
+    loginScreen.classList.remove("hidden");
+    app.classList.add("hidden");
+    loginError.textContent = mensaje;
+    loginError.classList.toggle("hidden", !mensaje);
+  };
 
-  cargarGaleria("cortinas");
+  const mostrarApp = () => {
+    loginScreen.classList.add("hidden");
+    app.classList.remove("hidden");
+    document.getElementById("sectionSelect").addEventListener("change", (e) => cargarGaleria(e.target.value));
+    document.getElementById("saveBtn").addEventListener("click", guardarDirectoEnGitHub);
+    document.getElementById("cancelCropBtn").addEventListener("click", cerrarModalEncuadre);
+    document.getElementById("applyCropBtn").addEventListener("click", aplicarEncuadre);
+    document.getElementById("cancelDeleteBtn").addEventListener("click", cerrarModalBorrado);
+    document.getElementById("confirmDeleteBtn").addEventListener("click", confirmarEliminacion);
+    cargarGaleria("cortinas");
+  };
+
+  const esAdministrador = (usuario) => {
+    const login = usuario?.login || usuario?.username;
+    return login === ADMIN_GITHUB_LOGIN;
+  };
+
+  const rechazarSesion = async (authManager) => {
+    await authManager?.logout?.();
+    mostrarLogin(`Solo la cuenta de GitHub ${ADMIN_GITHUB_LOGIN} tiene acceso.`);
+  };
+
+  const obtenerAuthManager = () => {
+    const backend = window.CMS?.getBackend?.();
+    return backend?.authManager;
+  };
+
+  const iniciarSesion = async () => {
+    const authManager = obtenerAuthManager();
+    if (!authManager) {
+      mostrarLogin("No se pudo cargar el servicio de autenticación. Recarga la página.");
+      return;
+    }
+
+    loginButton.disabled = true;
+    loginButton.querySelector("span").textContent = "Conectando con GitHub...";
+    try {
+      const resultado = await authManager.authenticate({ provider: "github" });
+      const usuario = resultado?.user || await authManager.currentUser?.();
+      if (!esAdministrador(usuario)) {
+        await rechazarSesion(authManager);
+        return;
+      }
+      mostrarApp();
+    } catch (error) {
+      console.error("Error de autenticación:", error);
+      mostrarLogin("No se pudo iniciar sesión con GitHub.");
+      loginButton.disabled = false;
+      loginButton.querySelector("span").textContent = "Iniciar Sesión con GitHub";
+    }
+  };
+
+  loginButton.addEventListener("click", iniciarSesion);
+
+  const comprobarSesion = async () => {
+    const authManager = obtenerAuthManager();
+    try {
+      const usuario = await authManager?.currentUser?.();
+      if (esAdministrador(usuario)) mostrarApp();
+      else if (usuario) await rechazarSesion(authManager);
+      else mostrarLogin();
+    } catch (error) {
+      console.error("Error al comprobar la sesión:", error);
+      mostrarLogin();
+    }
+  };
+
+  comprobarSesion();
 });
 
 function resolverRutaImagen(src) {
