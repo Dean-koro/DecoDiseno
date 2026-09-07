@@ -1,32 +1,11 @@
 {
-  "imagenes": [
-    {
-      "src": "imagenes/toldos/toldos-galeria-1.jpeg",
-      "alt": "imagen 1"
-    },
-    {
-      "src": "imagenes/toldos/toldos-galeria-2.jpeg",
-      "alt": "imagen 2"
-    },
-    {
-      "src": "imagenes/toldos/toldos-galeria-3.jpeg",
-      "alt": "imagen 3"
-    },
-    {
-      "src": "imagenes/toldos/toldos-galeria-4.jpeg",
-      "alt": "imagen 4"
-    },
-    {
-      "src": "imagenes/toldos/toldos-galeria-5.jpeg",
-      "alt": "imagen 5"
-    },
-    {
-      "src": "imagenes/toldos/toldos-galeria-6.jpeg",
-      "alt": "imagen 6"
-    },
-    {
-      "src": "imagenes/toldos/toldos-galeria-7.jpeg",
-      "alt": "imagen 7"
-    }
-  ]
+    "imagenes": [
+    { "src": "imagenes/toldos/toldos-galeria-1.jpeg", "alt": "imagen 1" },
+    { "src": "imagenes/toldos/toldos-galeria-2.jpeg", "alt": "imagen 2" },
+    { "src": "imagenes/toldos/toldos-galeria-3.jpeg", "alt": "imagen 3" },
+    { "src": "imagenes/toldos/toldos-galeria-4.jpeg", "alt": "imagen 4" },
+    { "src": "imagenes/toldos/toldos-galeria-5.jpeg", "alt": "imagen 5" },
+    { "src": "imagenes/toldos/toldos-galeria-6.jpeg", "alt": "imagen 6" },
+    { "src": "imagenes/toldos/toldos-galeria-7.jpeg", "alt": "imagen 7" }
+]
 }
