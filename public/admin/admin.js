@@ -7,6 +7,17 @@ const SECCIONES = {
   tapiceria_exterior: { jsonFile: "../content/galeria-exterior.json", githubPath: "public/content/galeria-exterior.json" }
 };
 const ADMIN_GITHUB_LOGIN = "bot-DecoDiseno";
+const CMS_CONFIG = {
+  backend: {
+    name: "github",
+    repo: "Dean-koro/DecoDiseno",
+    branch: "main",
+    base_url: "https://decap-oauth.25308167.workers.dev",
+  },
+};
+const CMS_READY = window.CMS?.init
+  ? window.CMS.init({ config: "config.yml" })
+  : Promise.resolve(false);
 
 let listaImagenes = [];
 let seccionActual = "cortinas";
@@ -55,17 +66,33 @@ document.addEventListener("DOMContentLoaded", () => {
     return backend?.authManager;
   };
 
+  const activarLoginNativo = () => {
+    const authUrl = new URL("https://decap-oauth.25308167.workers.dev/auth");
+    authUrl.searchParams.set("provider", "github");
+    authUrl.searchParams.set("origin", window.location.origin);
+    window.location.assign(authUrl.href);
+    return true;
+  };
+
+  const inicializarCMS = async () => {
+    if (!window.CMS?.getBackend) return false;
+    await CMS_READY;
+    return Boolean(obtenerAuthManager());
+  };
+
   const iniciarSesion = async () => {
     const authManager = obtenerAuthManager();
     if (!authManager) {
-      mostrarLogin("No se pudo cargar el servicio de autenticación. Recarga la página.");
+      if (!activarLoginNativo()) {
+        mostrarLogin("No se pudo cargar el servicio de autenticación. Recarga la página.");
+      }
       return;
     }
 
     loginButton.disabled = true;
     loginButton.querySelector("span").textContent = "Conectando con GitHub...";
     try {
-      const resultado = await authManager.authenticate({ provider: "github" });
+      const resultado = await authManager.authenticate();
       const usuario = resultado?.user || await authManager.currentUser?.();
       if (!esAdministrador(usuario)) {
         await rechazarSesion(authManager);
@@ -95,7 +122,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  comprobarSesion();
+  inicializarCMS()
+    .then((inicializado) => {
+      if (inicializado) comprobarSesion();
+      else mostrarLogin();
+    })
+    .catch((error) => {
+      console.error("Error al inicializar Decap CMS:", error);
+      mostrarLogin("No se pudo cargar el servicio de autenticación. Recarga la página.");
+    });
 });
 
 function resolverRutaImagen(src) {
