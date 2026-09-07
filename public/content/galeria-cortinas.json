@@ -1,84 +1,25 @@
-{
-  "imagenes": [
     {
-      "src": "imagenes/cortinas/cortinas-galeria-1.jpeg",
-      "alt": "imagen 1"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-2.jpeg",
-      "alt": "imagen 2"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-3.jpeg",
-      "alt": "imagen 3"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-4.jpeg",
-      "alt": "imagen 4"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-5.jpeg",
-      "alt": "imagen 5"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-6.jpeg",
-      "alt": "imagen 6"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-7.jpeg",
-      "alt": "imagen 7"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-8.jpeg",
-      "alt": "imagen 8"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-9.jpeg",
-      "alt": "imagen 9"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-10.jpeg",
-      "alt": "imagen 10"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-11.jpeg",
-      "alt": "imagen 11"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-12.jpeg",
-      "alt": "imagen 12"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-13.jpeg",
-      "alt": "imagen 13"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-14.jpeg",
-      "alt": "imagen 14"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-15.jpeg",
-      "alt": "imagen 15"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-16.jpeg",
-      "alt": "imagen 16"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-17.jpeg",
-      "alt": "imagen 17"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-18.jpeg",
-      "alt": "imagen 18"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-19.jpeg",
-      "alt": "imagen 19"
-    },
-    {
-      "src": "imagenes/cortinas/cortinas-galeria-20.jpeg",
-      "alt": "imagen 20"
+        "imagenes": 
+        [
+            { "src": "imagenes/cortinas/cortinas-galeria-1.jpeg", "alt": "imagen 1" },
+            { "src": "imagenes/cortinas/cortinas-galeria-2.jpeg", "alt": "imagen 2" },
+            { "src": "imagenes/cortinas/cortinas-galeria-3.jpeg", "alt": "imagen 3" },
+            { "src": "imagenes/cortinas/cortinas-galeria-4.jpeg", "alt": "imagen 4" },
+            { "src": "imagenes/cortinas/cortinas-galeria-5.jpeg", "alt": "imagen 5" },
+            { "src": "imagenes/cortinas/cortinas-galeria-6.jpeg", "alt": "imagen 6" },
+            { "src": "imagenes/cortinas/cortinas-galeria-7.jpeg", "alt": "imagen 7" },
+            { "src": "imagenes/cortinas/cortinas-galeria-8.jpeg", "alt": "imagen 8" },
+            { "src": "imagenes/cortinas/cortinas-galeria-9.jpeg", "alt": "imagen 9" },
+            { "src": "imagenes/cortinas/cortinas-galeria-10.jpeg", "alt": "imagen 10" },
+            { "src": "imagenes/cortinas/cortinas-galeria-11.jpeg", "alt": "imagen 11" },
+            { "src": "imagenes/cortinas/cortinas-galeria-12.jpeg", "alt": "imagen 12" },
+            { "src": "imagenes/cortinas/cortinas-galeria-13.jpeg", "alt": "imagen 13" },
+            { "src": "imagenes/cortinas/cortinas-galeria-14.jpeg", "alt": "imagen 14" },
+            { "src": "imagenes/cortinas/cortinas-galeria-15.jpeg", "alt": "imagen 15" },
+            { "src": "imagenes/cortinas/cortinas-galeria-16.jpeg", "alt": "imagen 16" },
+            { "src": "imagenes/cortinas/cortinas-galeria-17.jpeg", "alt": "imagen 17" },
+            { "src": "imagenes/cortinas/cortinas-galeria-18.jpeg", "alt": "imagen 18" },
+            { "src": "imagenes/cortinas/cortinas-galeria-19.jpeg", "alt": "imagen 19" },
+            { "src": "imagenes/cortinas/cortinas-galeria-20.jpeg", "alt": "imagen 20" }
+        ]
     }
-  ]
-}

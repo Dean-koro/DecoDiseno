@@ -12,6 +12,7 @@ const REPO_OWNER_NAME = "Dean-koro/DecoDiseno";
 const OAUTH_WORKER_URL = "https://auth.decodiseno.com.mx/auth";
 
 let listaImagenes = [];
+let listaImagenesOriginal = []; // Para detectar si hubo cambios
 let seccionActual = "cortinas";
 let cropperInstance = null;
 let indiceEncuadre = null;
@@ -36,12 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
     loginScreen?.classList.add("hidden");
     app?.classList.remove("hidden");
 
-    document.getElementById("sectionSelect")?.addEventListener("change", (e) => cargarGaleria(e.target.value));
-    document.getElementById("saveBtn")?.addEventListener("click", guardarDirectoEnGitHub);
-    document.getElementById("cancelCropBtn")?.addEventListener("click", cerrarModalEncuadre);
-    document.getElementById("applyCropBtn")?.addEventListener("click", aplicarEncuadre);
-    document.getElementById("cancelDeleteBtn")?.addEventListener("click", cerrarModalBorrado);
-    document.getElementById("confirmDeleteBtn")?.addEventListener("click", confirmarEliminacion);
+    // Registrar listeners solo una vez
+    if (!window._adminListenersReady) {
+      document.getElementById("sectionSelect")?.addEventListener("change", (e) => cargarGaleria(e.target.value));
+      document.getElementById("saveBtn")?.addEventListener("click", guardarDirectoEnGitHub);
+      document.getElementById("cancelCropBtn")?.addEventListener("click", cerrarModalEncuadre);
+      document.getElementById("applyCropBtn")?.addEventListener("click", aplicarEncuadre);
+      document.getElementById("cancelDeleteBtn")?.addEventListener("click", cerrarModalBorrado);
+      document.getElementById("confirmDeleteBtn")?.addEventListener("click", confirmarEliminacion);
+      window._adminListenersReady = true;
+    }
 
     cargarGaleria(seccionActual);
   };
@@ -52,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return login?.toLowerCase() === ADMIN_GITHUB_LOGIN.toLowerCase();
   };
 
-  // Validar si tenemos un token en localStorage y consultar /user a la API de GitHub
   const verificarSesionExistente = async () => {
     const token = localStorage.getItem("github_token");
     if (!token) return null;
@@ -97,12 +101,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const handleMessage = async (event) => {
-      // Solo procesamos mensajes con el formato correcto
       if (typeof event.data !== "string" || !event.data.startsWith("authorization:github:success:")) {
         return;
       }
 
-      // Limpiar listener y cerrar popup
       window.removeEventListener("message", handleMessage);
       if (popup && !popup.closed) popup.close();
 
@@ -115,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         localStorage.setItem("github_token", token);
 
-        // Verificar el usuario
         const userRes = await fetch("https://api.github.com/user", {
           headers: { Authorization: `token ${token}` }
         });
@@ -142,7 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("message", handleMessage);
 
-    // Si el usuario cierra el popup manualmente, restauramos el botón
     const checkClosed = setInterval(() => {
       if (popup.closed) {
         clearInterval(checkClosed);
@@ -155,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loginButton?.addEventListener("click", iniciarSesionOAuth);
 
-  // Verificar si ya hay una sesión guardada
   verificarSesionExistente().then((usuario) => {
     if (esAdministrador(usuario)) {
       mostrarApp();
@@ -190,7 +189,14 @@ async function cargarGaleria(seccion) {
     console.error("Error al obtener el JSON:", e);
     listaImagenes = [];
   }
+
+  // Guardar copia original para detectar cambios
+  listaImagenesOriginal = JSON.parse(JSON.stringify(listaImagenes));
   renderizarGrilla();
+}
+
+function hayCambiosPendientes() {
+  return JSON.stringify(listaImagenes) !== JSON.stringify(listaImagenesOriginal);
 }
 
 function renderizarGrilla() {
@@ -374,6 +380,14 @@ async function guardarDirectoEnGitHub() {
 
   if (!btn || !alertBox) return;
 
+  // Si no hay cambios, avisar y no subir nada
+  if (!hayCambiosPendientes()) {
+    alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-amber-100 text-amber-800";
+    alertBox.textContent = "No hay cambios pendientes para publicar.";
+    alertBox.classList.remove("hidden");
+    return;
+  }
+
   btn.disabled = true;
   btn.innerText = "Publicando cambios...";
   alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-blue-100 text-blue-800";
@@ -394,40 +408,61 @@ async function guardarDirectoEnGitHub() {
   try {
     const url = `https://api.github.com/repos/${REPO_OWNER_NAME}/contents/${configSeccion.githubPath}`;
 
-    // 1. Obtener SHA actual del archivo JSON en GitHub
-    let sha = "";
+    // 1. Obtener SHA actual
+    let sha = null;
     const getRes = await fetch(url, {
-      headers: { Authorization: `token ${token}` }
+      headers: {
+        Authorization: `token ${token}`,
+        Accept: "application/vnd.github.v3+json"
+      }
     });
 
     if (getRes.ok) {
       const fileData = await getRes.json();
       sha = fileData.sha;
+    } else if (getRes.status !== 404) {
+      throw new Error(`Error al obtener archivo: ${getRes.status}`);
     }
 
-    // 2. Subir nuevo Commit a GitHub (rama main)
+    // 2. Codificar contenido
+    const contentBase64 = btoa(unescape(encodeURIComponent(contenidoJson)));
+
+    // 3. Crear o actualizar
+    const body = {
+      message: `Actualizar galería de ${seccionActual} desde panel admin`,
+      content: contentBase64,
+      branch: "main"
+    };
+
+    if (sha) {
+      body.sha = sha;
+    }
+
     const putRes = await fetch(url, {
       method: "PUT",
       headers: {
         Authorization: `token ${token}`,
+        Accept: "application/vnd.github.v3+json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        message: `Actualizar galería de ${seccionActual} desde panel admin`,
-        content: btoa(unescape(encodeURIComponent(contenidoJson))),
-        sha: sha || undefined,
-        branch: "main"
-      })
+      body: JSON.stringify(body)
     });
 
     if (putRes.ok) {
+      // Actualizar la copia original para que ya no detecte cambios
+      listaImagenesOriginal = JSON.parse(JSON.stringify(listaImagenes));
+
       alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-green-100 text-green-800";
       alertBox.textContent = "¡Cambios publicados exitosamente en GitHub!";
     } else {
-      throw new Error(`GitHub API Error: ${putRes.status}`);
+      const errorData = await putRes.json().catch(() => ({}));
+      console.error("Error de GitHub:", putRes.status, errorData);
+      throw new Error(`GitHub API Error: ${putRes.status} - ${errorData.message || "Error desconocido"}`);
     }
   } catch (err) {
     console.error("Error al publicar:", err);
+    alertBox.className = "mb-6 p-4 rounded-xl font-medium text-sm bg-red-100 text-red-800";
+    alertBox.textContent = `Error al publicar: ${err.message}. Se descargará el archivo como respaldo.`;
     descargarJsonFallback(contenidoJson, configSeccion.githubPath);
   } finally {
     btn.disabled = false;
